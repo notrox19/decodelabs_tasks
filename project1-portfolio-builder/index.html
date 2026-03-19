@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>DevConnect</h1>
+</header>
+
+<div class="container">
+
+  <!-- FORM -->
+  <div class="form">
+    <h2>Create Your Profile</h2>
+
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="role" placeholder="Your Role">
+    <textarea id="bio" placeholder="Short Bio"></textarea>
+    <input type="text" id="skills" placeholder="Skills (HTML, CSS, JS)">
+    
+    <label>Upload Profile Image</label>
+    <input type="file" id="imageInput">
+
+    <button onclick="downloadCard()">Download Profile</button>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview">
+    <div class="card" id="card">
+
+      <img id="profileImg" src="https://via.placeholder.com/100" alt="profile">
+
+      <h2 id="pname">Your Name</h2>
+      <h4 id="prole">Your Role</h4>
+      <p id="pbio">Your bio will appear here...</p>
+      <div id="pskills"></div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

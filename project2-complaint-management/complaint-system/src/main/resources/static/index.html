@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #ff6600;
+        }
+
+        input, textarea {
+            width: 300px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 3px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: #ff6600;
+            color: white;
+        }
+
+        .resolve-btn {
+            background: green;
+            color: white;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #ff6600;
+            color: white;
+        }
+
+        td, th {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h2>Complaint System</h2>
+
+<input id="name" placeholder="Name"><br><br>
+<input id="email" placeholder="Email"><br><br>
+<textarea id="issue" placeholder="Issue"></textarea><br><br>
+
+<button class="submit-btn" onclick="addComplaint()">Submit</button>
+
+<hr>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+
+const API = "http://localhost:9090/api/complaints";
+
+function loadComplaints() {
+    fetch(API)
+        .then(res => res.json())
+        .then(data => {
+            let html = "";
+
+            data.forEach(c => {
+                html += `
+                <tr>
+                    <td>${c.id}</td>
+                    <td>${c.name}</td>
+                    <td>${c.email}</td>
+                    <td>${c.issue}</td>
+                    <td>${c.status}</td>
+                    <td>
+                        <button class="resolve-btn" onclick="updateStatus(${c.id})">Resolve</button>
+                        <button class="delete-btn" onclick="deleteComplaint(${c.id})">Delete</button>
+                    </td>
+                </tr>`;
+            });
+
+            document.getElementById("tableBody").innerHTML = html;
+        });
+}
+
+function addComplaint() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const issue = document.getElementById("issue").value;
+
+    if (!name || !email || !issue) {
+        alert("Fill all fields!");
+        return;
+    }
+
+    fetch(API, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ name, email, issue })
+    }).then(() => {
+        loadComplaints();
+
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("issue").value = "";
+    });
+}
+
+function deleteComplaint(id) {
+    fetch(API + "/" + id, { method: "DELETE" })
+        .then(loadComplaints);
+}
+
+function updateStatus(id) {
+    fetch(API + "/" + id + "?status=Resolved", { method: "PUT" })
+        .then(loadComplaints);
+}
+
+loadComplaints();
+
+</script>
+
+</body>
+</html>

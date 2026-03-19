@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Staff Dashboard Pro</title>
+
+<style>
+body {
+    font-family: 'Segoe UI';
+    margin: 0;
+    background: #ffffff;
+    color: #111;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #ff6600;
+    padding: 15px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* BUTTONS */
+button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add {
+    background: #ff6600;
+    color: white;
+}
+
+.add:hover {
+    background: #e65c00;
+}
+
+.delete {
+    background: #ff4d4d;
+    color: white;
+}
+
+.update {
+    background: #22c55e;
+    color: white;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #ff6600;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #f9f9f9;
+}
+
+/* STATUS */
+.active {
+    background: #22c55e;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+🚀 Staff Dashboard Pro
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>Add Staff</h2>
+<input id="name" placeholder="Name">
+<input id="email" placeholder="Email">
+<input id="role" placeholder="Role">
+<button class="add" onclick="addStaff()">Add Staff</button>
+</div>
+
+<div class="card">
+
+<h2>Staff List</h2>
+
+<input id="search" placeholder="Search..." onkeyup="searchStaff()">
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+const API = "http://localhost:9091/api/staff";
+let allData = [];
+
+// LOAD
+function loadStaff() {
+    fetch(API)
+    .then(res => res.json())
+    .then(data => {
+        allData = data;
+        render(data);
+    });
+}
+
+// RENDER
+function render(data) {
+    let html = "";
+    data.forEach(s => {
+        html += `
+        <tr>
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.email || "-"}</td>
+            <td>${s.role || "-"}</td>
+            <td><span class="active">Active</span></td>
+            <td>
+                <button class="update" onclick="updateStaff(${s.id})">Edit</button>
+                <button class="delete" onclick="deleteStaff(${s.id})">Delete</button>
+            </td>
+        </tr>`;
+    });
+    document.getElementById("tableBody").innerHTML = html;
+}
+
+// ADD
+function addStaff() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const role = document.getElementById("role").value;
+
+    if (!name || !email || !role) {
+        alert("Fill all fields");
+        return;
+    }
+
+    fetch(API, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ name, email, role })
+    }).then(() => {
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("role").value = "";
+        loadStaff();
+    });
+}
+
+// DELETE
+function deleteStaff(id) {
+    fetch(API + "/" + id, { method: "DELETE" })
+        .then(loadStaff);
+}
+
+// UPDATE (simple version)
+function updateStaff(id) {
+    const name = prompt("New name:");
+    const email = prompt("New email:");
+    const role = prompt("New role:");
+
+    if (!name || !email || !role) return;
+
+    fetch(API + "/" + id + "?name=" + name + "&email=" + email + "&role=" + role, {
+        method: "PUT"
+    }).then(loadStaff);
+}
+
+// SEARCH
+function searchStaff() {
+    const val = document.getElementById("search").value.toLowerCase();
+    const filtered = allData.filter(s =>
+        s.name.toLowerCase().includes(val)
+    );
+    render(filtered);
+}
+
+// AUTO LOAD
+loadStaff();
+
+</script>
+
+</body>
+</html>

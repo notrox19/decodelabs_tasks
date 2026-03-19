@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* HEADER */
+header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+h1 {
+  color: #ff7a00;
+  font-size: 24px;
+}
+
+/* LAYOUT */
+.container {
+  display: flex;
+  gap: 60px;
+  padding: 60px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* FORM */
+.form {
+  flex: 1;
+}
+
+.form h2 {
+  margin-bottom: 20px;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #ff7a00;
+}
+
+.form button {
+  background: linear-gradient(135deg, #ff7a00, #ff9a3c);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* PREVIEW */
+.preview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CARD */
+.card {
+  width: 320px;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #f1f1f1;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+}
+
+.card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.card h2 {
+  color: #ff7a00;
+}
+
+.card h4 {
+  color: #6b7280;
+  margin: 10px 0;
+}
+
+.card p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* SKILLS */
+#pskills span {
+  display: inline-block;
+  background: #fff7ed;
+  color: #ff7a00;
+  padding: 6px 12px;
+  margin: 5px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  .container {
+    flex-direction: column;
+    padding: 20px;
+    gap: 30px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 300px;
+    padding: 25px;
+  }
+
+  .form input,
+  .form textarea {
+    font-size: 14px;
+  }
+
+  .form button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+}
