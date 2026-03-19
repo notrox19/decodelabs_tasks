@@ -13,3 +13,14 @@
 - Add / Update / Delete staff
 - Search functionality
 - Clean UI dashboard
+
+## Project 4. Expense Tracker
+Full-stack project with:
+- Add / Edit / Delete
+- Live balance calculation
+- Category filter
+
+---
+
+## 👨‍💻 Author
+Mohammad Saadat
